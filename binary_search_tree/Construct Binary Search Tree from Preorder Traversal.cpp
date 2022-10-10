@@ -19,3 +19,22 @@ public:
         return root;
     }
 };
+// second and efficient solution
+class Solution{
+public:
+    //Function that constructs BST from its preorder traversal.
+    Node* build(int pre[],int size, int mx,int& i){
+        if(i>=size || pre[i]>mx) return NULL;
+        Node* root=newNode(pre[i]);
+        i++;
+        root->left=build(pre,size,root->data,i);
+        
+        root->right=build(pre,size,mx,i);
+        return root;
+    }
+    Node* createbst(int pre[], int size)
+    {
+        int i=0;
+        return build(pre,size,INT_MAX,i);
+    }
+};
