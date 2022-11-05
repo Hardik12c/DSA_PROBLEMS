@@ -1,32 +1,47 @@
+class store{
+    public:
+    int a;
+    int b;
+    int ai;
+    int bi;
+    store(int a,int b,int ai,int bi){
+        this->a=a;
+        this->b=b;
+        this->ai=ai;
+        this->bi=bi;
+    }
+};
 class compare{
     public:
-    bool operator()(pair<int,int> a,pair<int,int> b){
-        float m=float(a.first)/a.second;
-        float n=float(b.first)/b.second;
-        return m<n;
+    bool operator()(store* a,store* b){
+        float m=float(a->a)/a->b;
+        float n=float(b->a)/b->b;
+        return m>n;
     }
 };
 class Solution {
 public:
     vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
-        priority_queue<pair<int,int>,vector<pair<int,int>>,compare> pq;
-        for(int i=0;i<arr.size();i++){
-            for(int j=i+1;j<arr.size();j++){
-                if(pq.size()<k) pq.push({arr[i],arr[j]});
-                
-                else{
-                    float m=float(pq.top().first)/pq.top().second;
-                    float n=float(arr[i])/arr[j];
-                    if(n<m){
-                        pq.pop();
-                        pq.push({arr[i],arr[j]});
-                    }
-                }
+        priority_queue<store*,vector<store*>,compare> pq;
+        vector<int> ans;
+        int i=0;            
+        while(i<k && i<arr.size()){
+            pq.push(new store(arr[i],arr[arr.size()-1],i,arr.size()-1));
+            i++;
+        }
+        while(!pq.empty()){
+            auto temp=pq.top();
+            pq.pop();
+            k--;
+            if(temp->bi-1>temp->ai){
+                pq.push(new store(temp->a,arr[temp->bi-1],temp->ai,temp->bi-1));
+            }
+            if(k==0){
+                ans.push_back(temp->a);
+                ans.push_back(temp->b);
+                break;
             }
         }
-        vector<int> ans;
-        ans.push_back(pq.top().first);
-        ans.push_back(pq.top().second);
         return ans;
     }
 };
