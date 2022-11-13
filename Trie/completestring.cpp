@@ -1,27 +1,20 @@
-#include <iostream>
-
-using namespace std;
+#include <bits/stdc++.h> 
 class trienode{
     public:
     char data;
     trienode* children[26];
-    int cp;
-    int cw;
+    bool isterminal;
     trienode(char data){
         this->data=data;
-        cp=0;
         for(int i=0;i<26;i++){
             children[i]=NULL;
         }
+        isterminal=false;
     }
 };
-bool compare(string a,string b){
-    if(a.length()==b.length()) return a<b;
-    else return a.length()<b.length();
-}
 void insert(trienode* root,string s){
     if(s.length()==0){
-        root->cp++;
+        root->isterminal=true;
         return;
     }
     int index=s[0]-'a';
@@ -33,16 +26,31 @@ void insert(trienode* root,string s){
     }
     insert(root,s.substr(1));
 }
-int main(){
+bool search(trienode* root,string s){
+    if(s.length()==0){
+        return root->isterminal;
+    }
+    int index=s[0]-'a';
+    if(root->children[index]!=NULL && root->children[index]->isterminal==true){
+        root=root->children[index];
+    }else return false;
+    return search(root,s.substr(1));
+}
+bool compare(string a ,string b){
+    if(a.length()==b.length()) return a>b;
+    else return a.length()<b.length();
+}
+string completeString(int n, vector<string> &a){
     trienode* tr=new trienode('\0');
+    for(int i=0;i<a.size();i++){
+        insert(tr,a[i]);
+    }
     string mx="";
-    bool flag=true;
-    // insert(tr,"n","n",mx,0,flag);
-    // insert(tr,"ni","ni",mx,0,flag);
-    // insert(tr,"nin","nin",mx,0,flag);
-    // insert(tr,"ninj","ninj",mx,0,flag);
-    // // insert(tr,"ninja","ninja",mx,0,flag);
-    // insert(tr,"ninga","ninga",mx,0,flag);
-    cout<<mx<<endl;
-    return 0;
+    for(int i=0;i<a.size();i++){
+        if(search(tr,a[i]) && compare(mx,a[i])){
+            mx=a[i];
+        }
+    }
+    if(mx=="") mx="None";
+    return mx;
 }
