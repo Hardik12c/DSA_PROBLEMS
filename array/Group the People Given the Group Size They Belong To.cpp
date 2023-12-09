@@ -21,3 +21,30 @@ public:
         return ans;
     }
 };
+
+// more optimized Solution
+class Solution {
+public:
+    vector<vector<int>> groupThePeople(vector<int>& groupSizes) {
+        vector<vector<int>> ans;
+        unordered_map<int,vector<int>> mpp;
+        for(int i=0;i<groupSizes.size();i++){
+            if(mpp.find(groupSizes[i])==mpp.end()){
+                vector<int> newVector;
+                mpp[groupSizes[i]]=newVector;
+            }else{
+                vector<int> temp=mpp[groupSizes[i]];
+                if(temp.size()==groupSizes[i]){
+                    ans.push_back(temp);
+                    vector<int> newVector;
+                    mpp[groupSizes[i]]=newVector;
+                }
+            }
+            mpp[groupSizes[i]].push_back(i);
+        }
+        for(auto it:mpp){
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+};
