@@ -19,3 +19,26 @@ public:
         return ans;
     }
 };
+//another solution
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> ans;
+        sort(intervals.begin(),intervals.end());
+        vector<int> temp=intervals[0];
+        for(int i=1;i<intervals.size();i++){
+            int num1=intervals[i][0];
+            int num2=intervals[i][1];
+            if(temp[1]<=num2 && temp[1]>=num1){
+                temp[1]=num2;
+            }else if(num2<temp[1]){
+                continue;
+            }else{
+                ans.push_back(temp);
+                temp=intervals[i];
+            }
+        }
+        ans.push_back(temp);
+        return ans;
+    }
+};
