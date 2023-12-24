@@ -30,3 +30,18 @@ public:
         return ans->next;
     }
 };
+
+// recursive best method
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        if(!head->next) return head;
+
+        ListNode* node=removeNodes(head->next);
+        if(head->val<node->val){
+            return node;
+        }
+        head->next=node;
+        return head;
+    }
+};
