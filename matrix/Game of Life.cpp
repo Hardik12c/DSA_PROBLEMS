@@ -32,3 +32,28 @@ public:
         board=ans;
     }
 };
+// more easy solution
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        vector<vector<int>> temp = board;
+        vector<int> row = {-1, -1, -1, 0, 0, 1, 1, 1};
+        vector<int> col = {-1, 0, 1, -1, 1, -1, 0, 1};
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board[0].size(); j++) {
+                int count = 0;
+                for (int k = 0; k < 8; k++) {
+                    if (i + row[k] >= 0 && i + row[k] < board.size() &&
+                        j + col[k] >= 0 && j + col[k] < board[0].size()) {
+                        count += temp[i + row[k]][j + col[k]];
+                    }
+                }
+                if (count < 2 || count > 3) {
+                    board[i][j] = 0;
+                } else if (count == 3) {
+                    board[i][j] = 1;
+                }
+            }
+        }
+    }
+};
