@@ -13,3 +13,22 @@ public:
         return prev1;
     }
 };
+
+//memoization
+class Solution {
+public:
+    int recurse(vector<int> &nums,int ind,vector<int> &dp){
+        if(ind>=nums.size()){
+            return 0;
+        }
+        if(dp[ind]!=-1) return dp[ind];
+        //take
+        int take=nums[ind]+recurse(nums,ind+2,dp);
+        int nottake=recurse(nums,ind+1,dp);
+        return dp[ind]=max(take,nottake);
+    }
+    int rob(vector<int>& nums) {
+        vector<int> dp(nums.size()+1,-1);
+        return recurse(nums,0,dp);
+    }
+};
